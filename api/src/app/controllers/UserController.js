@@ -65,7 +65,14 @@ class UserController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name, email, password, password_new, password_confirm } = req.body;
+    const {
+      name,
+      email,
+      password,
+      password_new,
+      password_confirm,
+      avatar_id,
+    } = req.body;
 
     const user = await User.findByPk(req.userId);
 
@@ -88,12 +95,14 @@ class UserController {
       name,
       email,
       password: password_new,
+      avatar_id,
     });
 
     return res.json({
       id: req.userId,
       name,
       email,
+      avatar_id,
     });
   }
 }
