@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import User from '../models/User';
+import File from '../models/File';
 
 class UserController {
   async store(req, res) {
@@ -98,12 +99,18 @@ class UserController {
       avatar_id,
     });
 
-    return res.json({
-      id: req.userId,
-      name,
-      email,
-      avatar_id,
+    const updatedUser = await User.findAll({
+      where: { id: req.userId },
+      attributes: ['id', 'name', 'email'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['path', 'url'],
+        },
+      ],
     });
+    return res.json(updatedUser);
   }
 }
 
