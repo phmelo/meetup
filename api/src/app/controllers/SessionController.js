@@ -31,9 +31,11 @@ class SessionController {
       return res.status(401).json({ error: 'Password does not match' });
     }
 
-    const { url } = await File.findOne({
+    const file = await File.findOne({
       where: { id: user.avatar_id },
     });
+
+    const url = file ? file.url : '';
 
     const { id, name } = user;
 
