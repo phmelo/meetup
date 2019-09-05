@@ -1,7 +1,8 @@
-import { isBefore, parseISO } from 'date-fns';
+import { isBefore } from 'date-fns';
 import SignedUpMeetup from '../models/SignedupMeetup';
-import User from '../models/User';
 import Meetup from '../models/Meetup';
+import User from '../models/User';
+import Mail from '../../lib/Mail';
 
 class SignedUpMeetupController {
   async store(req, res) {
@@ -11,7 +12,14 @@ class SignedUpMeetupController {
       });
     }
 
-    const meetup = await Meetup.findByPk(req.body.meetup_id);
+    const meetup = await Meetup.findByPk(req.body.meetup_id, {
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
     if (!meetup) {
       return res.status(400).json({
         error: `Meetup not foud. `,
@@ -56,6 +64,18 @@ class SignedUpMeetupController {
         user_id: req.userId,
       });
 
+      const { name, email } = await User.findByPk(req.userId);
+
+      await Mail.sendMail({
+        to: `${meetup.User.name} <${meetup.User.email}>`,
+        subject: 'Nova inscrição!',
+        template: 'notification',
+        context: {
+          organizer: meetup.User.name,
+          user: name,
+          email,
+        },
+      });
       return res.json(signUpMeetup);
     } catch (err) {
       console.log(err);
