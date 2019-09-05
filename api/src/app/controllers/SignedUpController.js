@@ -2,7 +2,8 @@ import { isBefore } from 'date-fns';
 import SignedUpMeetup from '../models/SignedupMeetup';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
-import Mail from '../../lib/Mail';
+import Queue from '../../lib/Queue';
+import NotificationMail from '../jobs/NotificationMail';
 
 class SignedUpMeetupController {
   async store(req, res) {
@@ -66,16 +67,13 @@ class SignedUpMeetupController {
 
       const { name, email } = await User.findByPk(req.userId);
 
-      await Mail.sendMail({
-        to: `${meetup.User.name} <${meetup.User.email}>`,
-        subject: 'Nova inscrição!',
-        template: 'notification',
-        context: {
-          organizer: meetup.User.name,
-          user: name,
-          email,
-        },
+      await Queue.add(NotificationMail.key, {
+        organizer: meetup.User.name,
+        organizerMail: meetup.User.email,
+        name,
+        email,
       });
+
       return res.json(signUpMeetup);
     } catch (err) {
       console.log(err);
