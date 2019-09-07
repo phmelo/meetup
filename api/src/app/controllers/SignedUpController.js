@@ -1,4 +1,5 @@
 import { isBefore } from 'date-fns';
+import { Op } from 'sequelize';
 import SignedUpMeetup from '../models/SignedupMeetup';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
@@ -77,14 +78,40 @@ class SignedUpMeetupController {
       return res.json(signUpMeetup);
     } catch (err) {
       console.log(err);
-      return res.status(400).json(err);
+      return res.status(400).json({ msg: 'Internal error' });
     }
   }
 
   async index(req, res) {
-    return res.status(400).json({
-      error: `Not implemented. `,
+    const signed = await SignedUpMeetup.findAll({
+      where: {
+        user_id: req.userId,
+      },
+      attributes: ['id', 'user_id', 'meetup_id'],
+      include: [
+        {
+          model: Meetup,
+          where: {
+            datetime: {
+              [Op.gte]: new Date(),
+            },
+          },
+          attributes: [
+            'id',
+            'title',
+            'description',
+            'location',
+            'datetime',
+            'banner_id',
+            'user_id',
+          ],
+          required: true,
+        },
+      ],
+      order: [[Meetup, 'datetime']],
     });
+
+    return res.json(signed);
   }
 
   async delete(req, res) {
