@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-import { isBefore, parseISO } from 'date-fns';
+import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
+import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
 
 class MeetupController {
@@ -60,8 +61,35 @@ class MeetupController {
   }
 
   async index(req, res) {
+    const { page = 1, limit = 10, date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ error: 'Invalid date' });
+    }
+    const parseDate = parseISO(date);
+
+    if (!(parseDate instanceof Date && !isNaN(parseDate))) {
+      return res.status(400).json({ error: 'Invalid date' });
+    }
+
     const meetup = await Meetup.findAll({
-      where: { user_id: req.userId },
+      where: {
+        // user_id: req.userId,
+        datetime: {
+          [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
+        },
+      },
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'location',
+        'datetime',
+        'banner_id',
+        'user_id',
+      ],
+      limit,
+      offset: (page - 1) * limit,
     });
     return res.json(meetup);
   }
