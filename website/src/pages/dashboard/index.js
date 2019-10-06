@@ -1,7 +1,16 @@
 import React from 'react';
+import { Container } from './styles';
 
-// import { Container } from './styles';
+export default function Dashboard() {
+  return (
+    <Container>
+      <header>
+        <strong>Header do Dash Board</strong>
+      </header>
 
-export default function dashboard() {
-  return <div />;
+      <ul>
+        <strong>Dashboard</strong>
+      </ul>
+    </Container>
+  );
 }

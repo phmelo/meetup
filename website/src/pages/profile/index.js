@@ -1,7 +1,17 @@
 import React from 'react';
+import { Container } from './styles';
 
-// import { Container } from './styles';
+export default function Profile() {
+  return (
+    <Container>
+      <header>
+        <strong>Profile</strong>
+      </header>
 
-export default function profile() {
-  return <div />;
+      <ul>
+        <strong>Profile</strong>
+        <span>Paulo Henrique</span>
+      </ul>
+    </Container>
+  );
 }
