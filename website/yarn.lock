@@ -3155,10 +3155,10 @@ cssstyle@^1.0.0, cssstyle@^1.1.1:
   dependencies:
     cssom "0.3.x"
 
-customize-cra@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/customize-cra/-/customize-cra-0.6.1.tgz#3c055b72474b924af6df04917af1cafc4c99ff94"
-  integrity sha512-UTS9VNPeg/CpFhk8vCtQSzW3KKgad8lsoUsaXMJjdypc/9I0JXFcWFCuir7jdBTsLAO3/cwi/ExCvLJzG/p06Q==
+customize-cra@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/customize-cra/-/customize-cra-0.8.0.tgz#011e65fde9e443733668551740b76e3eefe95822"
+  integrity sha512-fIiuM4sJfDmTc+0ctNV0BCnSTsfq76bpAOHvUCrCzWaG1dHpHw2Yfec+liH4EdicG5TuwhYLFt2yY2ocJ8HoxA==
   dependencies:
     lodash.flow "^3.5.0"
 
@@ -7393,6 +7393,13 @@ pnp-webpack-plugin@1.5.0:
   integrity sha512-jd9olUr9D7do+RN8Wspzhpxhgp1n6Vd0NtQ4SFkmIACZoEL1nkyAdW9Ygrinjec0vgDcWjscFQQ1gDW8rsfKTg==
   dependencies:
     ts-pnp "^1.1.2"
+
+polished@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-3.4.1.tgz#1eb5597ec1792206365635811d465751f5cbf71c"
+  integrity sha512-GflTnlP5rrpDoigjczEkS6Ye7NDA4sFvAnlr5hSDrEvjiVj97Xzev3hZlLi3UB27fpxyTS9rWU64VzVLWkG+mg==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
 
 portfinder@^1.0.9:
   version "1.0.24"
