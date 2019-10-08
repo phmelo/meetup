@@ -63,8 +63,28 @@ class MeetupController {
   async index(req, res) {
     const { page = 1, limit = 10, date } = req.query;
 
+    if (Object.keys(req.query).length === 0) {
+      const meetup = await Meetup.findAll({
+        where: {
+          user_id: req.userId,
+        },
+        attributes: [
+          'id',
+          'title',
+          'description',
+          'location',
+          'datetime',
+          'banner_id',
+          'user_id',
+        ],
+        limit,
+        offset: (page - 1) * limit,
+      });
+      return res.json(meetup);
+    }
+
     if (!date) {
-      return res.status(400).json({ error: 'Invalid date' });
+      return res.status(400).json({ error: `Invalid Date ${date}` });
     }
     const parseDate = parseISO(date);
 

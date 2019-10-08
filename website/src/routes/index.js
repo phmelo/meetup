@@ -13,9 +13,9 @@ export default function Routes() {
       <Route path="/" exact component={SignIn} />
       <Route path="/register" component={SignUp} />
       <Route path="/dashboard" component={Dashboard} isPrivate />
-      <Route path="/detail" component={Dashboard} isPrivate />
-      <Route path="/create" component={Dashboard} isPrivate />
-      <Route path="/edit" component={Dashboard} isPrivate />
+      <Route path="/detail:id" component={Profile} isPrivate />
+      <Route path="/create" component={Profile} isPrivate />
+      <Route path="/edit" component={Profile} isPrivate />
       <Route path="/profile" component={Profile} isPrivate />
     </Switch>
   );
