@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
+import File from '../models/File';
 
 class MeetupController {
   async store(req, res) {
@@ -61,9 +62,9 @@ class MeetupController {
   }
 
   async index(req, res) {
-    const { page = 1, limit = 10, date } = req.query;
+    const { page = 1, limit = 10, date, id } = req.query;
 
-    if (Object.keys(req.query).length === 0) {
+    if (Object.keys(req.query).length === 0 && !id) {
       const meetup = await Meetup.findAll({
         where: {
           user_id: req.userId,
@@ -79,6 +80,31 @@ class MeetupController {
         ],
         limit,
         offset: (page - 1) * limit,
+      });
+      return res.json(meetup);
+    }
+
+    let idmeetup;
+    if (!id) {
+      idmeetup = req.params.id;
+    } else {
+      idmeetup = id;
+    }
+
+    if (idmeetup) {
+      const meetup = await Meetup.findAll({
+        where: {
+          id,
+        },
+        attributes: [
+          'id',
+          'title',
+          'description',
+          'location',
+          'datetime',
+          'banner_id',
+          'user_id',
+        ],
       });
       return res.json(meetup);
     }
@@ -137,6 +163,36 @@ class MeetupController {
     return res.json({
       msg: `Meetup was excluded.`,
     });
+  }
+
+  async indexById(req, res) {
+    const { id } = req.params;
+
+    if (id) {
+      const meetup = await Meetup.findAll({
+        where: {
+          id,
+        },
+        attributes: [
+          'id',
+          'title',
+          'description',
+          'location',
+          'datetime',
+          'banner_id',
+          'user_id',
+        ],
+        include: [
+          {
+            model: File,
+            attributes: ['path', 'url'],
+          },
+        ],
+      });
+      return res.json(meetup);
+    }
+
+    return res.status(400).json({ error: `No meetup found` });
   }
 }
 
