@@ -17,11 +17,6 @@ export const Content = styled.div`
   nav {
     display: flex;
     align-items: center;
-
-    a {
-      font-weight: bold;
-      color: #7159c1;
-    }
   }
 
   aside {
