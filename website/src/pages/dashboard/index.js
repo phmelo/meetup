@@ -31,7 +31,7 @@ export default function Dashboard() {
       setMeetup(data);
     }
     loadMeetup();
-  });
+  }, []);
 
   return (
     <Container>
@@ -51,7 +51,7 @@ export default function Dashboard() {
         {meetup &&
           meetup.map(m => (
             <Meetup key={m.id}>
-              <Link to={`/details/${m.id}`}>
+              <Link to={`/edit/${m.id}`}>
                 <button type="button">
                   <div>
                     <strong>{m.description}</strong>
