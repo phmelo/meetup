@@ -51,7 +51,7 @@ export default function Dashboard() {
         {meetup &&
           meetup.map(m => (
             <Meetup key={m.id}>
-              <Link to={`/edit/${m.id}`}>
+              <Link to={`/detail/${m.id}`}>
                 <button type="button">
                   <div>
                     <strong>{m.description}</strong>
