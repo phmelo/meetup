@@ -141,7 +141,15 @@ class MeetupController {
   }
 
   async delete(req, res) {
-    const meetup = await Meetup.findByPk(req.body.id);
+    const id = req.body.id ? req.body.id : req.params.id;
+    console.log(`Trying to delete: ${id}`);
+    if (!id) {
+      return res.status(400).json({
+        error: `Meetup not informed. `,
+      });
+    }
+
+    const meetup = await Meetup.findByPk(id);
     if (!meetup) {
       return res.status(400).json({
         error: `Meetup not found. `,
@@ -159,7 +167,7 @@ class MeetupController {
         error: 'You are nor allowed to exclude a meetup that already happend',
       });
     }
-    // meetup.destroy();
+    meetup.destroy();
     return res.json({
       msg: `Meetup was excluded.`,
     });
