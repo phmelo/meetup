@@ -20,6 +20,10 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.loading = false;
         break;
       }
+      case '@auth/EDIT_AUTH_SUCCESS': {
+        draft.user = action.payload;
+        break;
+      }
       case '@auth/SIGN_FAILURE': {
         draft.loading = false;
         break;
@@ -31,6 +35,7 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.user = null;
         break;
       }
+
       default:
     }
   });
