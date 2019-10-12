@@ -99,16 +99,9 @@ class UserController {
       avatar_id,
     });
 
-    const updatedUser = await User.findAll({
+    const updatedUser = await User.findOne({
       where: { id: req.userId },
       attributes: ['id', 'name', 'email'],
-      include: [
-        {
-          model: File,
-          as: 'avatar',
-          attributes: ['path', 'url'],
-        },
-      ],
     });
     return res.json(updatedUser);
   }

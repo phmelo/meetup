@@ -19,6 +19,24 @@ export function signUpRequest(name, email, password) {
   };
 }
 
+export function editAuthRequest(data) {
+  return {
+    type: '@auth/EDIT_AUTH_REQUEST',
+    payload: data,
+  };
+}
+export function editAuthSuccess(data) {
+  return {
+    type: '@auth/EDIT_AUTH_SUCCESS',
+    payload: data,
+  };
+}
+export function editAuthFailure() {
+  return {
+    type: '@auth/EDIT_AUTH_FAILURE',
+  };
+}
+
 export function signOut() {
   return {
     type: '@auth/SIGN_OUT',

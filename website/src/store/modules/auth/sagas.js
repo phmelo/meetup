@@ -4,7 +4,12 @@ import { toast } from 'react-toastify';
 import history from '../../../services/history';
 import api from '../../../services/api';
 
-import { signInSuccess, signFailure } from './actions';
+import {
+  signInSuccess,
+  signFailure,
+  editAuthSuccess,
+  editAuthFailure,
+} from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -51,6 +56,24 @@ export function signOut() {
   history.push('/');
 }
 
+export function* editAuth({ payload }) {
+  try {
+    console.tron.log(payload);
+    // const { name, email, password, password_new, password_confirm } = payload;
+    const response = yield call(api.put, 'users', payload);
+    toast.success('Usuário atualizado com sucesso!');
+    yield put(editAuthSuccess(response.data));
+  } catch (err) {
+    if (err.message === 'Network Error') {
+      console.tron.warn(`Erro: ${err.message}`);
+    } else {
+      console.tron.warn(err);
+    }
+    toast.error('Erro ao atualizar usuário, confira seus dados!');
+    yield put(editAuthFailure());
+  }
+}
+
 export function setToken({ payload }) {
   if (!payload) return;
   const { token } = payload.auth;
@@ -64,4 +87,5 @@ export default all([
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
   takeLatest('@auth/SIGN_OUT', signOut),
+  takeLatest('@auth/EDIT_AUTH_REQUEST', editAuth),
 ]);
