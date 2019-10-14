@@ -6,14 +6,14 @@ import { Provider } from 'react-redux';
 import './config/ReactotronConfig';
 
 import { store, persistor } from './store';
-
-import Routes from './routes';
+import App from './App';
+// import Routes from './routes';
 
 export default function src() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <Routes />
+        <App />
       </PersistGate>
     </Provider>
   );
