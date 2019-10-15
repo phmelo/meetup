@@ -2,13 +2,13 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
 
-export default function Dashboard() {
+export default function Meetups() {
   return <Background />;
 }
 
-Dashboard.navigationOptions = {
+Meetups.navigationOptions = {
   tabBarLabel: 'Meetups',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="event" size={20} color={tintColor} />
+    <Icon name="format-list-bulleted" size={20} color={tintColor} />
   ),
 };
