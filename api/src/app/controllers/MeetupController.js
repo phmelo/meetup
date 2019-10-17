@@ -3,6 +3,7 @@ import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
 import File from '../models/File';
+import User from '../models/User';
 
 class MeetupController {
   async store(req, res) {
@@ -133,6 +134,16 @@ class MeetupController {
         'datetime',
         'banner_id',
         'user_id',
+      ],
+      include: [
+        {
+          model: File,
+          attributes: ['path', 'url'],
+        },
+        {
+          model: User,
+          attributes: ['name'],
+        },
       ],
       limit,
       offset: (page - 1) * limit,

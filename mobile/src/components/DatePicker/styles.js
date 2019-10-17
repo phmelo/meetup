@@ -8,14 +8,14 @@ export const Container = styled.View`
   margin-top: 55px;
 `;
 
-export const Date = styled.Text`
+export const PickerDate = styled.Text`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
   margin: 0 15px;
 `;
 
-export const Button = styled(TouchableOpacity)`
+export const PickerButton = styled(TouchableOpacity)`
   padding: 5px;
   align-items: center;
   justify-content: center;

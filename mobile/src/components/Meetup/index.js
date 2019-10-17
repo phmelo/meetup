@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { format, parseISO } from 'date-fns';
+import locale from 'date-fns/locale/pt-BR';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
@@ -11,28 +13,29 @@ import {
   InfoItem,
 } from './styles';
 
-export default function Meetup() {
+export default function Meetup({ data }) {
+  const dateFormatted = useMemo(() => {
+    return format(parseISO(data.datetime), "dd 'de' MMMM', às' HH:mm ", {
+      locale,
+    });
+  }, [data.datetime]);
+
   return (
     <Container>
-      <Banner
-        source={{
-          uri:
-            'https://secure.meetupstatic.com/photos/event/3/c/0/7/highres_485235367.jpeg',
-        }}
-      />
+      <Banner source={{ uri: data.File.url }} />
       <Top>
-        <Title>Nome do Evento</Title>
+        <Title>{data.title}</Title>
         <Info>
           <Icon name="event" size={20} color="rgba(153,153,153,1)" />
-          <InfoItem>24 de Novembro, as 20:00</InfoItem>
+          <InfoItem>{dateFormatted}</InfoItem>
         </Info>
         <Info>
           <Icon name="place" size={20} color="rgba(153,153,153,1)" />
-          <InfoItem>Rua Pereira Nunes, 153</InfoItem>
+          <InfoItem>{data.location}</InfoItem>
         </Info>
         <Info>
           <Icon name="person" size={20} color="rgba(153,153,153,1)" />
-          <InfoItem>Organizador: Paulo Henrique</InfoItem>
+          <InfoItem>Organizador: {data.User.name}</InfoItem>
         </Info>
       </Top>
       <SubscribeButton onPress={() => {}}>Realizar Inscrição</SubscribeButton>
