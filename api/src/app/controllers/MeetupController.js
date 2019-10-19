@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { isBefore, startOfDay, endOfDay, parseISO } from 'date-fns';
-import { Op } from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
 import File from '../models/File';
 import User from '../models/User';
@@ -85,31 +85,6 @@ class MeetupController {
       return res.json(meetup);
     }
 
-    let idmeetup;
-    if (!id) {
-      idmeetup = req.params.id;
-    } else {
-      idmeetup = id;
-    }
-
-    if (idmeetup) {
-      const meetup = await Meetup.findAll({
-        where: {
-          id,
-        },
-        attributes: [
-          'id',
-          'title',
-          'description',
-          'location',
-          'datetime',
-          'banner_id',
-          'user_id',
-        ],
-      });
-      return res.json(meetup);
-    }
-
     if (!date) {
       return res.status(400).json({ error: `Invalid Date ${date}` });
     }
@@ -121,9 +96,13 @@ class MeetupController {
 
     const meetup = await Meetup.findAll({
       where: {
-        // user_id: req.userId,
         datetime: {
           [Op.between]: [startOfDay(parseDate), endOfDay(parseDate)],
+        },
+        id: {
+          [Op.notIn]: sequelize.literal(
+            `(select meetup_id from signed_up_meetups where user_id =  ${req.userId} )`
+          ),
         },
       },
       attributes: [
@@ -145,6 +124,7 @@ class MeetupController {
           attributes: ['name'],
         },
       ],
+      order: sequelize.col('datetime'),
       limit,
       offset: (page - 1) * limit,
     });

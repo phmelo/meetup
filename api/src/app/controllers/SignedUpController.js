@@ -8,13 +8,14 @@ import NotificationMail from '../jobs/NotificationMail';
 
 class SignedUpMeetupController {
   async store(req, res) {
-    if (!req.body.meetup_id) {
+    const { id } = req.params;
+    if (!id) {
       return res.status(400).json({
         error: `Meetup not informed. `,
       });
     }
-
-    const meetup = await Meetup.findByPk(req.body.meetup_id, {
+    console.log(`Trying to subscribe id: ${id}`);
+    const meetup = await Meetup.findByPk(id, {
       include: [
         {
           model: User,
@@ -62,7 +63,7 @@ class SignedUpMeetupController {
 
     try {
       const signUpMeetup = await SignedUpMeetup.create({
-        ...req.body,
+        meetup_id: id,
         user_id: req.userId,
       });
 
@@ -78,7 +79,7 @@ class SignedUpMeetupController {
       return res.json(signUpMeetup);
     } catch (err) {
       console.log(err);
-      return res.status(400).json({ msg: 'Internal error' });
+      return res.status(400).json({ msg: err });
     }
   }
 
