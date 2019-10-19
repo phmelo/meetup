@@ -8,12 +8,31 @@ import { Container, List } from './styles';
 
 export default function Meetups() {
   const [meetups, setMeetups] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   async function loadMeetups(date, page = 1) {
     const response = await api.get('/meetups', {
       params: { date, page },
     });
-    setMeetups(response.data);
+
+    if (date === currentDate) {
+      setCurrentPage(page);
+      setMeetups([...meetups, ...response.data]);
+    } else {
+      setCurrentPage(1);
+      setCurrentDate(date);
+      setMeetups(response.data);
+    }
+  }
+
+  async function loadMoreMeetups() {
+    const nextPage = currentPage + 1;
+    loadMeetups(currentDate, nextPage);
+  }
+
+  async function removeMeetup(id) {
+    setMeetups(meetups.filter(m => m.id !== id));
   }
 
   return (
@@ -22,8 +41,12 @@ export default function Meetups() {
       <Container>
         <List
           data={meetups}
+          onEndReachedThreshold={0.5}
+          onEndReached={loadMoreMeetups}
           keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <Meetup data={item} />}
+          renderItem={({ item }) => (
+            <Meetup data={item} onButtonClick={id => removeMeetup(id)} />
+          )}
         />
       </Container>
     </Background>
