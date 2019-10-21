@@ -124,7 +124,7 @@ class MeetupController {
           attributes: ['name'],
         },
       ],
-      order: sequelize.col('datetime'),
+      order: sequelize.col('id'),
       limit,
       offset: (page - 1) * limit,
     });
