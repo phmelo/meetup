@@ -17,7 +17,6 @@ import {
 
 export default function Meetup({ data, onButtonClick }) {
   const [isSubscribing, setIsSubscribing] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(false);
 
   const dateFormatted = useMemo(() => {
     return format(parseISO(data.datetime), "dd 'de' MMMM', às' HH:mm ", {
@@ -28,16 +27,12 @@ export default function Meetup({ data, onButtonClick }) {
   async function handleSubscription(id) {
     try {
       setIsSubscribing(true);
-
       await api.post(`/meetup/subscribe/${id}`);
-      onButtonClick(id);
-      // console.tron.log(response.error);
-      // setMeetups(meetups.filter(m => m.id !== id));
-
       Alert.alert(`Inscrição realizada. ID: ${id}`);
+      setIsSubscribing(false);
+      onButtonClick(id);
     } catch (error) {
-      Alert.alert(`Não foi possível se inscrever no Meetup`);
-    } finally {
+      Alert.alert(error.response.data.error);
       setIsSubscribing(false);
     }
   }

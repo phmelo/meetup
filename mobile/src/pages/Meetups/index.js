@@ -17,6 +17,10 @@ export default function Meetups() {
     });
 
     if (date === currentDate) {
+      if (response.data.length <= 0) {
+        return;
+      }
+
       setCurrentPage(page);
       setMeetups([...meetups, ...response.data]);
     } else {
@@ -41,7 +45,7 @@ export default function Meetups() {
       <Container>
         <List
           data={meetups}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.1}
           onEndReached={loadMoreMeetups}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
