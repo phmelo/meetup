@@ -49,7 +49,11 @@ export default function Meetups() {
           onEndReached={loadMoreMeetups}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
-            <Meetup data={item} onButtonClick={id => removeMeetup(id)} />
+            <Meetup
+              data={item}
+              onButtonClick={id => removeMeetup(id)}
+              typeAction="subscribe"
+            />
           )}
         />
       </Container>

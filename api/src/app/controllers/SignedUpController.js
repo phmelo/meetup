@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import SignedUpMeetup from '../models/SignedupMeetup';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
+import File from '../models/File';
 import Queue from '../../lib/Queue';
 import NotificationMail from '../jobs/NotificationMail';
 
@@ -106,18 +107,60 @@ class SignedUpMeetupController {
             'banner_id',
             'user_id',
           ],
+          include: [
+            {
+              model: File,
+              attributes: ['path', 'url'],
+            },
+            {
+              model: User,
+              attributes: ['name'],
+            },
+          ],
           required: true,
         },
       ],
       order: [[Meetup, 'datetime']],
     });
 
+    if (!signed) {
+      return res.json([]);
+    }
+
     return res.json(signed);
   }
 
   async delete(req, res) {
-    return res.status(400).json({
-      error: `Not implemented. `,
+    const id = req.body.id ? req.body.id : req.params.id;
+    console.log(`Trying to unsubscribe: ${id}`);
+    if (!id) {
+      return res.status(400).json({
+        error: `Subscription not informed. `,
+      });
+    }
+
+    const subscription = await SignedUpMeetup.findByPk(id);
+    if (!subscription) {
+      return res.status(400).json({
+        error: `Subscription not found. `,
+      });
+    }
+
+    const { user_id, datetime } = subscription;
+    if (user_id !== req.userId) {
+      return res.status(401).json({
+        error: `You are not allowed to exclude this Subscription. `,
+      });
+    }
+    if (isBefore(datetime, new Date())) {
+      return res.status(400).json({
+        error:
+          'You are nor allowed to exclude a Subscription that already happend',
+      });
+    }
+    subscription.destroy();
+    return res.json({
+      msg: `Subscription was excluded.`,
     });
   }
 }
