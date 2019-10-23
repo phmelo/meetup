@@ -1,32 +1,47 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Alert } from 'react-native';
 import Background from '~/components/Background';
 import Meetup from '~/components/Meetup';
 import DatePicker from '~/components/DatePicker';
 import api from '~/services/api';
+
 import { Container, List } from './styles';
 
-export default function Meetups() {
+export default function Meetups({ navigation }) {
   const [meetups, setMeetups] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   async function loadMeetups(date, page = 1) {
-    const response = await api.get('/meetups', {
-      params: { date, page },
-    });
+    try {
+      const response = await api.get('/meetups', {
+        params: { date, page },
+      });
 
-    if (date === currentDate) {
-      if (response.data.length <= 0) {
-        return;
+      if (date === currentDate) {
+        if (response.data.length <= 0) {
+          return;
+        }
+
+        setCurrentPage(page);
+        setMeetups([...meetups, ...response.data]);
+      } else {
+        setCurrentPage(1);
+        setCurrentDate(date);
+        setMeetups(response.data);
       }
-
-      setCurrentPage(page);
-      setMeetups([...meetups, ...response.data]);
-    } else {
-      setCurrentPage(1);
-      setCurrentDate(date);
-      setMeetups(response.data);
+    } catch (e) {
+      if (e.response.data) {
+        if (e.response.data.error === 'Token invalid') {
+          // Alert.alert('Sessão expirada! Logue novamente.');
+          // dispatch(signOut);
+          navigation.navigate('SignIn');
+        } else {
+          Alert.alert(e.response.data.error);
+        }
+      }
     }
   }
 
