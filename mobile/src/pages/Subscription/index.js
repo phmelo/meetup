@@ -7,8 +7,6 @@ import Meetup from '~/components/Meetup';
 import api from '~/services/api';
 import { Container, List } from './styles';
 
-// import { Container } from './styles';
-
 export function Subscription({ isFocused }) {
   const [meetups, setMeetups] = useState([]);
 

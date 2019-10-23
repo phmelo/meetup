@@ -26,9 +26,13 @@ export function* signIn({ payload }) {
     // history.push('/dashboard');
   } catch (err) {
     if (err.message === 'Network Error') {
-      console.tron.warn(`Erro: ${err.message}`);
+      console.tron.warn(`Erro: ${err.response}`);
+      Alert.alert(`Sem internet`);
     } else {
       console.tron.warn(err);
+      if (err.response.data) {
+        Alert.alert(err.response.data.error);
+      }
     }
 
     yield put(signFailure());
@@ -65,11 +69,14 @@ export function* editAuth({ payload }) {
     yield put(editAuthSuccess(response.data));
   } catch (err) {
     if (err.message === 'Network Error') {
-      console.tron.warn(`Erro: ${err.message}`);
+      // console.tron.warn(`Erro: ${err.message}`);
+      Alert.alert(`Sem internet`);
     } else {
       console.tron.warn(err);
+      // Alert.alert(err.response.data.error);
+      Alert.alert('Erro ao atualizar usuário, confira seus dados!');
     }
-    Alert.alert('Erro ao atualizar usuário, confira seus dados!');
+
     yield put(editAuthFailure());
   }
 }
