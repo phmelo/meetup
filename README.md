@@ -1,5 +1,5 @@
 # Desafio Rocketseat - Meetup
-Projeto realisado utilizando: ReactJS, React-Native and NodeJS
+Projeto realizado utilizando: ReactJS, React-Native and NodeJS
 
 
 Além do github, utilizei também o Azure DevOps para gerenciar as tarefas. 
