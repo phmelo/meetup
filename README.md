@@ -9,9 +9,9 @@ Nele é possível rastrear cada tarefa originada de histórias ou de bugs encont
 <br>
 
 ## Passo a passo para configuração do ambiente:
-- Pré requisitos: Postgree, MongoDB e Redis instalados
-Caso prefira, pode utilizar o docker e instalar os seguintes containers:
-docker run --name postgresDB -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+- Pré requisitos: Postgree e Redis instalados<br>
+Caso prefira, pode utilizar o docker e instalar os seguintes containers:<br>
+docker run --name postgresDB -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres<br>
 docker run --name redis -p 6379:6379 -d -t redis:alpine
 
 Crie um cadastro Sentry para controle de log:
