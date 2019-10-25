@@ -2,24 +2,25 @@
 Projeto realizado utilizando: ReactJS, React-Native and NodeJS
 
 
-Além do github, utilizei também o Azure DevOps para gerenciar as tarefas. 
-https://phmelo.visualstudio.com/Meetup
-Nele é possível rastrear cada tarefa originada de histórias ou de bugs encontrados e os commits/pull requests realizados.
+Além do github, utilizei também o Azure DevOps para organizar as tarefas. 
+https://phmelo.visualstudio.com/Meetup<BR>
+Eu o utilizei para facilitar o meu estudo, pois nele consigo vincular uma história/tarefa/bugs encontrados a um commits/pull requests criado.<BR>
+Projeto desenvolvido no Windows 10 com VSCode, Reactotron, Docker, Insomnia, DBeaver e a parte mobile usei meu próprio celular em vez de emulador.
 
 <br>
 
 ## Passo a passo para configuração do ambiente:
-- Pré requisitos: Postgree e Redis instalados<br>
-Caso prefira, pode utilizar o docker e instalar os seguintes containers:<br>
+**Pré requisitos:** Postgree e Redis instalados<br>
+Caso prefira, pode instalar o docker (https://www.docker.com/products/docker-desktop)<BR> e instalar os seguintes containers:<br>
 docker run --name postgresDB -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres<br>
 docker run --name redis -p 6379:6379 -d -t redis:alpine
 
-Crie um cadastro Sentry para controle de log:
-https://sentry.io
+Crie um cadastro Sentry para controle de log:<BR>
+https://sentry.io<BR>
 Crie uma organização, crie um projeto express e Gere uma Client Key DSN que será usada no arquivo .ENV da API.
 
 
-Crie um cadastro no mailtrap, caso só queira fazer testes:
+Crie um cadastro no mailtrap, caso só queira fazer testes:<BR>
 https://mailtrap.io/
 
 <br>
@@ -29,7 +30,7 @@ https://mailtrap.io/
 1 - Clone o repositório para a sua máquina.<br>
 2 - Entre na pasta API, digite: yarn ou yarn install<br>
 3 - Renomeie o arquivo .env.example para .env<br>
-4 - Configure as variáveis de ambiente no arquivo .env**<br>
+4 - Configure as variáveis de ambiente no arquivo .env<br>
 
 Exemplo do arquivo .env:<br>
 			
